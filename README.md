@@ -1,2 +1,30 @@
-# HHI_explainer
-R Shiny Application for HHI viz
+## Overview
+The HHI explainer Balancing Authority Tool is an interactive component of the overall [Power Sector Competitiveness Dashboard](https://nicholasinstitute.duke.edu/project/power-sector-competitiveness-dashboard).
+
+Built using R Shiny, the [Power Sector Competitiveness Dashboard Simulator Tool](https://nicholasinstitute.duke.edu/project/power-sector-competitiveness-dashboard/simulator) translates complex policy changes into quantitative adjustments to the Dashboard’s underlying indicators, enabling transparent and reproducible scenario analysis.
+
+## Functionality
+1. Scenario Design: Users can modify State policies, regulatory structures, and market arrangements that influence power sector competitiveness. Outputs are displayed through dynamically updated visualizations. 
+2. Indicator Adjustment: The simulator maps policy and structural condition changes to adjustments in the indicators used to construct competitiveness scores. These indicators are normalized (0-1) and aggregated using a consistent methodology across states.
+3. Score Recalculation: Once inputs are modified, the simulator recomputes:
+   * Individual indicator values
+   * Composite competitiveness scores
+   * Relative state rankings
+4. Weights: Users can optionally adjust the relative importance of the three core competitiveness dimensions:
+    * Consumer
+    * Structure
+    * Regional Market
+      
+   By default, each category is equally weighted (33% each). All weights are applied dynamically and propagate through the composite scoring framework, updating overall competitiveness scores and state rankings in real time.
+
+## This repo contains the following files:
+
+`scenario_simulator_PSCD.R`
+Code for running and formatting the Shiny app in the Power Sector Competitiveness Dashboard.
+
+`indicator_data.rds`
+Processed HHI data used for the dashboard.
+
+`state_indicator_data.csv`
+Raw HHI data inputs before formatting or processing.
+
