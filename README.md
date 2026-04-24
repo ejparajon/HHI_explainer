@@ -21,7 +21,7 @@ The tool displays both Generation HHI and Capacity HHI metrics for the sixteen l
    
    Both plots respond to the same BA and metric selections, enabling direct comparison of how concentration patterns differ between capacity ownership and generation activity.
 
-4. **Interactive Features**: Plotly-based visualizations include zoom, pan, hover tooltips with exact values, and downloadable PNG exports.
+4. **Interactive Features**: Plotly-based visualizations include hover tooltips with exact values, the ability to isolate specific balancing authorities, and downloadable PNG exports.
 
 ## Repository Contents
 
