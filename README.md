@@ -1,30 +1,39 @@
 ## Overview
-The HHI explainer Balancing Authority Tool is an interactive component of the overall [Power Sector Competitiveness Dashboard](https://nicholasinstitute.duke.edu/project/power-sector-competitiveness-dashboard).
+The Balancing Authority Time Series Analysis Tool is an interactive component of the overall [Power Sector Competitiveness Dashboard](https://nicholasinstitute.duke.edu/project/power-sector-competitiveness-dashboard). Built using R Shiny, this tool enables users to explore trends in market concentration across [Balancing Authorities](https://www.energy.gov/sites/default/files/2023-08/Balancing%20Authority%20Backgrounder_2022-Formatted_041723_508.pdf) over time (1990-2024).
 
-Built using R Shiny, the [HHI explainer Balancing Authority Tool](https://nicholasinstitute.duke.edu/project/power-sector-competitiveness-dashboard/simulator) enables users to explore trends in Concentration and Generation HHI across [Balancing Authorities]([https://nicholasinstitute.duke.edu/project/power-sector-competitiveness-dashboard/simulator](https://www.energy.gov/sites/default/files/2023-08/Balancing%20Authority%20Backgrounder_2022-Formatted_041723_508.pdf)) and time (1980-2024).
+The tool displays both Generation HHI and Capacity HHI metrics for the sixteen largest balancing authorities in terms of 2024 total retail sales, allowing users to examine how market concentration has evolved differently across generation activity versus installed capacity.
 
 ## Functionality
-1. Scenario Design: Users can modify State policies, regulatory structures, and market arrangements that influence power sector competitiveness. Outputs are displayed through dynamically updated visualizations. 
-2. Indicator Adjustment: The simulator maps policy and structural condition changes to adjustments in the indicators used to construct competitiveness scores. These indicators are normalized (0-1) and aggregated using a consistent methodology across states.
-3. Score Recalculation: Once inputs are modified, the simulator recomputes:
-   * Individual indicator values
-   * Composite competitiveness scores
-   * Relative state rankings
-4. Weights: Users can optionally adjust the relative importance of the three core competitiveness dimensions:
-    * Consumer
-    * Structure
-    * Regional Market
-      
-   By default, each category is equally weighted (33% each). All weights are applied dynamically and propagate through the composite scoring framework, updating overall competitiveness scores and state rankings in real time.
 
-## This repo contains the following files:
+1. **Balancing Authority Selection**: Users can select any combination of the 16 largest balancing authorities, organized into two groups:
+   * RTO/ISO Markets (CAISO, ERCOT, ISO-NE, MISO, NYISO, PJM, SPP)
+   * Non-RTO/ISO Markets (BPA, DUKE-CP, DUKE-FL, FPL, NEVP, PACE, PSCO, SOCO, TVA)
 
-`ba_shiny_app.R`
-Code for running and formatting the Shiny app in the Power Sector Competitiveness Dashboard.
+2. **Metric Options**: Users can view concentration through four different specifications:
+   * **LOESS Smoothed**: HHI values smoothed using local polynomial regression to reduce year-to-year noise (excludes 1998-2000 due to survey instrument changes)
+   * **Raw HHI**: Herfindahl-Hirschman Index calculated directly from annual data without smoothing
+   * **Normalized to 1990**: HHI values indexed to 1990 baseline to show relative change over time
+   * **Effective # of Firms**: Calculated as 1/HHI, representing the number of equal-sized firms that would produce equivalent concentration
 
-`ba_data.rds`
-Processed HHI data used for the dashboard.
+3. **Synchronized Visualization**: The tool displays two vertically aligned time series plots:
+   * Generation HHI (top panel): Shows concentration in actual electricity generation
+   * Capacity HHI (bottom panel): Shows concentration in installed generation capacity
+   
+   Both plots respond to the same BA and metric selections, enabling direct comparison of how concentration patterns differ between capacity ownership and generation activity.
 
-`ba_hhi_panel.csv`
-Raw HHI data inputs before formatting or processing.
+4. **Interactive Features**: Plotly-based visualizations include zoom, pan, hover tooltips with exact values, and downloadable PNG exports.
+
+## Repository Contents
+
+**`ba_shiny_app.R`**  
+Complete R Shiny application code for the Balancing Authority Time Series Analysis Tool.
+
+**`ba_data.rds`**  
+Processed panel dataset containing HHI metrics (generation and capacity) for all 16 balancing authorities across all years and metric specifications.
+
+**`ba_hhi_panel.csv`**  
+Raw HHI data before processing and formatting.
+
+## Data Sources
+EIA-860 (generator-level capacity data) and EIA-861 (utility-level generation and sales data)
 
