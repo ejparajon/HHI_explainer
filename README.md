@@ -2,6 +2,7 @@
 The Balancing Authority Time Series Analysis Tool is an interactive component of the overall [Power Sector Competitiveness Dashboard](https://nicholasinstitute.duke.edu/project/power-sector-competitiveness-dashboard). Built using R Shiny, this tool enables users to explore trends in market concentration across [Balancing Authorities](https://www.energy.gov/sites/default/files/2023-08/Balancing%20Authority%20Backgrounder_2022-Formatted_041723_508.pdf) over time (1990-2024).
 
 The tool displays both Generation HHI and Capacity HHI metrics for the sixteen largest balancing authorities in terms of 2024 total retail sales, allowing users to examine how market concentration has evolved differently across generation activity versus installed capacity.
+
 Full details available in [article preprint / final publication link(s) as applicable] 
 
 ## Functionality
