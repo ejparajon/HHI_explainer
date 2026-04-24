@@ -277,6 +277,7 @@ server <- function(input, output, session) {
       ) +
       theme_minimal(base_size = 14) +
       theme(
+        text = element_text(family = "Roboto"),   
         plot.title = element_text(size = 16, face = "bold", margin = margin(b = 15)),
         axis.title = element_text(size = 12, face = "bold"),
         axis.text = element_text(size = 10),
@@ -290,6 +291,7 @@ server <- function(input, output, session) {
     
     ggplotly(p, tooltip = "text") %>%
       plotly::layout(
+        font = list(family = "Roboto"),  
         hovermode = "closest",
         hoverlabel = list(
           bgcolor = "white",
