@@ -1,7 +1,7 @@
 ## Overview
 The HHI explainer Balancing Authority Tool is an interactive component of the overall [Power Sector Competitiveness Dashboard](https://nicholasinstitute.duke.edu/project/power-sector-competitiveness-dashboard).
 
-Built using R Shiny, the [HHI explainer Balancing Authority Tool](https://nicholasinstitute.duke.edu/project/power-sector-competitiveness-dashboard/simulator) translates complex policy changes into quantitative adjustments to the Dashboard’s underlying indicators, enabling transparent and reproducible scenario analysis.
+Built using R Shiny, the [HHI explainer Balancing Authority Tool](https://nicholasinstitute.duke.edu/project/power-sector-competitiveness-dashboard/simulator) enables users to explore trends in Concentration and Generation HHI across balancing authority and time.
 
 ## Functionality
 1. Scenario Design: Users can modify State policies, regulatory structures, and market arrangements that influence power sector competitiveness. Outputs are displayed through dynamically updated visualizations. 
