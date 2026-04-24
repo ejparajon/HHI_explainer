@@ -19,7 +19,7 @@ Built using R Shiny, the [Power Sector Competitiveness Dashboard Simulator Tool]
 
 ## This repo contains the following files:
 
-`scenario_simulator_PSCD.R`
+`ba_shiny_app.R`
 Code for running and formatting the Shiny app in the Power Sector Competitiveness Dashboard.
 
 `indicator_data.rds`
