@@ -95,6 +95,11 @@ ui <- fluidPage(
             "RTO/ISO Markets:",
             choices = available_bas[1:7],
             selected = available_bas[1]
+          ),
+          actionButton(
+            "select_all_rto",
+            "Select All RTOs",
+            style = "font-size: 0.85rem; padding: 4px 8px; margin-top: 5px;"
           )
         ),
         column(
@@ -104,6 +109,11 @@ ui <- fluidPage(
             "Non-RTO/ISO Markets:",
             choices = available_bas[8:16],
             selected = NULL
+          ),
+          actionButton(
+            "select_all_non_rto",
+            "Select All Non-RTOs",
+            style = "font-size: 0.85rem; padding: 4px 8px; margin-top: 5px;"
           )
         )
       ),
@@ -156,6 +166,32 @@ ui <- fluidPage(
 
 # Server
 server <- function(input, output, session) {
+  
+  # Select ALL RTOs 
+  observeEvent(input$select_all_rto, {
+    updateCheckboxGroupInput(
+      session, "ba_select_1",
+      selected = available_bas[1:7]
+    )
+    
+    updateCheckboxGroupInput(
+      session, "ba_select_2",
+      selected = character(0)   
+    )
+  })
+  
+  # Select ALL Non-RTOs 
+  observeEvent(input$select_all_non_rto, {
+    updateCheckboxGroupInput(
+      session, "ba_select_2",
+      selected = available_bas[8:16]
+    )
+    
+    updateCheckboxGroupInput(
+      session, "ba_select_1",
+      selected = character(0)   
+    )
+  })
   
   # Combine both BA selections
   selected_bas <- reactive({
