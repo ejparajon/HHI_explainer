@@ -22,9 +22,9 @@ Built using R Shiny, the [Power Sector Competitiveness Dashboard Simulator Tool]
 `ba_shiny_app.R`
 Code for running and formatting the Shiny app in the Power Sector Competitiveness Dashboard.
 
-`indicator_data.rds`
+`ba_data.rds`
 Processed HHI data used for the dashboard.
 
-`state_indicator_data.csv`
+`ba_hhi_panel.csv`
 Raw HHI data inputs before formatting or processing.
 
