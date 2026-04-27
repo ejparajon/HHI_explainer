@@ -12,6 +12,7 @@ Full details available in [article preprint / final publication link(s) as appli
    * Non-RTO/ISO Markets (BPA, DUKE-CP, DUKE-FL, FPL, NEVP, PACE, PSCO, SOCO, TVA)
 
 2. **Metric Options**: Users can view concentration through three different specifications:
+   
 All HHI values are smoothed using local-mean smoothing (degree 0 polynomial) with Epanechnikov kernel to reduce year-to-year noise. Years 1998–2000 are excluded from smoothing due to changes in EIA survey instruments and widespread restructuring during this period that likely affected reporting consistency.
    * **Local-Mean Smoothed HHI**: HHI values range from near zero in markets with a large number of small firms to 10,000 in pure monopoly markets.
    * **Normalized to 1990**: HHI values indexed to 1990 baseline to show relative change over time
