@@ -11,19 +11,19 @@ Full details available in [article preprint / final publication link(s) as appli
    * RTO/ISO Markets (CAISO, ERCOT, ISO-NE, MISO, NYISO, PJM, SPP)
    * Non-RTO/ISO Markets (BPA, DUKE-CP, DUKE-FL, FPL, NEVP, PACE, PSCO, SOCO, TVA)
 
-2. **Metric Options**: Users can view concentration through four different specifications:
-   * **LOESS Smoothed**: HHI values smoothed using local polynomial regression to reduce year-to-year noise (excludes 1998-2000 due to survey instrument changes)
-   * **Raw HHI**: Herfindahl-Hirschman Index calculated directly from annual data without smoothing
+2. **Metric Options**: Users can view concentration through three different specifications:
+All HHI values are smoothed using local-mean smoothing (degree 0 polynomial) with Epanechnikov kernel to reduce year-to-year noise. Years 1998–2000 are excluded from smoothing due to changes in EIA survey instruments and widespread restructuring during this period that likely affected reporting consistency.
+   * **Local-Mean Smoothed HHI**: HHI values range from near zero in markets with a large number of small firms to 10,000 in pure monopoly markets.
    * **Normalized to 1990**: HHI values indexed to 1990 baseline to show relative change over time
    * **Effective # of Firms**: Calculated as 1/HHI, representing the number of equal-sized firms that would produce equivalent concentration
 
-3. **Synchronized Visualization**: The tool displays two vertically aligned time series plots:
-   * Generation HHI (top panel): Shows concentration in actual electricity generation
-   * Capacity HHI (bottom panel): Shows concentration in installed generation capacity
+4. **Synchronized Visualization**: The tool displays two vertically aligned time series plots:
+    * Capacity HHI (top panel): Shows concentration in installed generation capacity
+   * Generation HHI (bottom panel): Shows concentration in actual electricity generation
    
    Both plots respond to the same BA and metric selections, enabling direct comparison of how concentration patterns differ between capacity ownership and generation activity.
 
-4. **Interactive Features**: Plotly-based visualizations include on-hover tooltips with exact values, the ability to isolate specific balancing authorities within the figures, and downloadable PNG exports.
+6. **Interactive Features**: Plotly-based visualizations include on-hover tooltips with exact values, the ability to isolate specific balancing authorities within the figures, and downloadable PNG exports.
 
 ## Repository Contents
 
