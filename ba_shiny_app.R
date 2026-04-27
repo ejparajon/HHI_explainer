@@ -25,8 +25,7 @@ linetype_map <- setNames(
 
 # Metric type choices (applies to both capacity and generation)
 metric_choices <- c(
-  "LOESS Smoothed" = "smoothed",
-  "Raw HHI" = "raw",
+  "Local-Mean Smoothed" = "smoothed",
   "Normalized to 1990" = "norm_1990",
   "Effective # of Firms" = "eff_num_firms"
 )
@@ -34,22 +33,19 @@ metric_choices <- c(
 # Column name mappings
 gen_metrics <- c(
   smoothed = "hhi_gen_smoothed",
-  raw = "raw_hhi_gen",
-  norm_1990 = "norm_1990_hhi_gen",
-  eff_num_firms = "eff_num_firms_gen"
+  norm_1990 = "norm_hhi_gen_smoothed",
+  eff_num_firms = "eff_no_firms_smoothed_gen"
 )
 
 cap_metrics <- c(
   smoothed = "hhi_cap_smoothed",
-  raw = "raw_hhi_cap",
-  norm_1990 = "norm_1990_hhi_cap",
-  eff_num_firms = "eff_num_firms_cap"
+  norm_1990 = "norm_hhi_cap_smoothed",
+  eff_num_firms = "eff_no_firms_smoothed_cap"
 )
 
 # Display labels
 metric_labels <- c(
-  smoothed = "LOESS Smoothed HHI",
-  raw = "Raw HHI",
+  smoothed = "Local-Mean Smoothed HHI",
   norm_1990 = "HHI Normalized to 1990",
   eff_num_firms = "Effective # of Firms"
 )
@@ -78,7 +74,11 @@ ui <- fluidPage(
   ),
   tags$div(
     style = "font-size: 0.9rem; margin-top: 10px; margin-bottom: 20px; line-height: 1.5; color: #495057;",
-    tags$strong("Note:"), " These figures show trends in Generation HHI (top) and Capacity HHI (bottom) for the sixteen largest balancing authorities in terms of 2024 total retail sales. RTO/ISO market areas and non-RTO/ISO market areas are shown with colored solid and dashed lines, respectively. Lines labeled \"LOESS Smoothed\" (our preferred specification of outcome variable) are based on local polynomial (LOESS) regression (see metric definitions for further details)."
+    
+    tags$strong("Note:"),
+    " These figures show trends in Capacity HHI (top) and Generation HHI (bottom) for the sixteen largest balancing authorities in terms of 2024 total retail sales. RTO/ISO market areas and non-RTO/ISO market areas are shown with colored solid and dashed lines, respectively.",
+    tags$br(),
+    " The HHI values are smoothed via local-mean polynomial regression to reduce year-to-year noise (see Metric Definitions for further details)."
   ),
   
   hr(),
@@ -140,13 +140,12 @@ ui <- fluidPage(
         ),
         tags$div(
           style = "font-size: 0.85rem; line-height: 1.5; color: #495057; padding-left: 10px;",
-          tags$p(tags$strong("LOESS Smoothed:"), "HHI values smoothed using local polynomial regression to reduce year-to-year noise. Years 1998–2000 are excluded from smoothing due to changes in EIA survey instruments and widespread restructuring during this period that likely affected reporting consistency."),
-          tags$p(tags$strong("Raw HHI:"), "Herfindahl-Hirschman Index calculated directly from annual EIA data without smoothing."),
+          tags$p(tags$strong("Note:"), "All HHI values are smoothed using local-mean smoothing (degree 0 polynomial) with Epanechnikov kernel to reduce year-to-year noise. Years 1998–2000 are excluded from smoothing due to changes in EIA survey instruments and widespread restructuring during this period that likely affected reporting consistency."),
+          tags$p(tags$strong("Local-Mean Smoothed HHI:"), "HHI values range from near zero in markets with a large number of small firms to 10,000 in pure monopoly markets."),
           tags$p(tags$strong("Normalized to 1990:"), "HHI values indexed to 1990 baseline (1990 = 1.0) to show relative change over time."),
           tags$p(tags$strong("Effective # of Firms:"), "Calculated as 1/HHI. Represents the number of equal-sized firms that would produce the same concentration.")
         )
       ),
-      
       hr(),
       
       htmlOutput("selection_summary")
@@ -155,11 +154,11 @@ ui <- fluidPage(
     mainPanel(
       width = 9,
       
-      plotlyOutput("generation_plot", height = "500px"),
+      plotlyOutput("capacity_plot", height = "500px"),
       
       hr(style = "margin-top: 30px; margin-bottom: 30px;"),
       
-      plotlyOutput("capacity_plot", height = "500px"),
+      plotlyOutput("generation_plot", height = "500px"),
         )
   )
 )
