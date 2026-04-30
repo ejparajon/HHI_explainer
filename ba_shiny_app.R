@@ -8,18 +8,20 @@ library(plotly)
 # Load data
 ba_data <- readRDS("ba_data.rds")
 
-# Reorder BAs: RTOs first, then non-RTOs
+# Reorder BAs: RTOs first, then non-RTOs, then National Average
 rto_bas <- c("CAISO", "ERCOT", "ISO-NE", "MISO", "NYISO", "PJM", "SPP")
 non_rto_bas <- c("BPA", "DUKE-CP", "DUKE-FL", "FPL", "NEVP", "PACE", "PSCO", "SOCO", "TVA")
-available_bas <- c(rto_bas, non_rto_bas)
+available_bas <- c(rto_bas, non_rto_bas, "National Average")
 
-# Create color palette
-ba_colors <- scales::hue_pal()(length(available_bas))
-names(ba_colors) <- available_bas
+# Create color palette 
+ba_colors <- c(
+  setNames(scales::hue_pal()(length(rto_bas) + length(non_rto_bas)), c(rto_bas, non_rto_bas)),
+  "National Average" = "#000000"
+)
 
-# Create linetype map
+# Create linetype map 
 linetype_map <- setNames(
-  c(rep("solid", length(rto_bas)), rep("dashed", length(non_rto_bas))),
+  c(rep("solid", length(rto_bas)), rep("dashed", length(non_rto_bas)), "solid"),
   available_bas
 )
 
@@ -70,7 +72,7 @@ ui <- fluidPage(
   titlePanel(""),
   tags$div(
     style = "font-size: 0.95rem; margin-top: 10px; margin-bottom: 0px; line-height: 1.5;",
-    "Users can select balancing authorities and a metric of interest using the interactive controls below."
+    "Users can select balancing authorities and/or the National Weighted State Average (see Metric Definitions for further details) and a metric of interest using the interactive controls below."
   ),
   tags$div(
     style = "font-size: 0.9rem; margin-top: 10px; margin-bottom: 20px; line-height: 1.5; color: #495057;",
@@ -86,6 +88,11 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       width = 3,
+      checkboxInput(
+        "national_select",
+        "Include National Weighted State Average",
+        value = TRUE
+      ),
       
       fluidRow(
         column(
@@ -94,7 +101,7 @@ ui <- fluidPage(
             "ba_select_1",
             "RTO/ISO Markets:",
             choices = available_bas[1:7],
-            selected = available_bas[1]
+            selected = NULL
           ),
           actionButton(
             "select_all_rto",
@@ -117,7 +124,6 @@ ui <- fluidPage(
           )
         )
       ),
-      
       selectInput(
         "metric_select",
         "Select Metric Type:",
@@ -140,6 +146,7 @@ ui <- fluidPage(
         ),
         tags$div(
           style = "font-size: 0.85rem; line-height: 1.5; color: #495057; padding-left: 10px;",
+          tags$p(tags$strong("National Weighted Average:"), "National HHI measures constructed using a weighted average of state-level HHI measures, with weights based on states’ shares of total retail sales in each year."),
           tags$p(tags$strong("Note:"), "All HHI values are smoothed using local-mean smoothing (degree 0 polynomial) with Epanechnikov kernel to reduce year-to-year noise. Years 1998–2000 are excluded from smoothing due to changes in EIA survey instruments and widespread restructuring during this period that likely affected reporting consistency."),
           tags$p(tags$strong("Local-Mean Smoothed HHI:"), "HHI values range from near zero in markets with a large number of small firms to 10,000 in pure monopoly markets."),
           tags$p(tags$strong("Normalized to 1990:"), "HHI values indexed to 1990 baseline (1990 = 1.0) to show relative change over time."),
@@ -148,7 +155,8 @@ ui <- fluidPage(
       ),
       hr(),
       
-      htmlOutput("selection_summary")
+      htmlOutput("selection_summary"),
+      downloadLink("download_data", "Click to download the data file (.csv)")
     ),
     
     mainPanel(
@@ -165,7 +173,14 @@ ui <- fluidPage(
 
 # Server
 server <- function(input, output, session) {
-  
+  output$download_data <- downloadHandler(
+    filename = function() {
+      "ba_data.csv"
+    },
+    content = function(file) {
+      write.csv(ba_data, file, row.names = FALSE)
+    }
+  )
   # Select ALL RTOs 
   observeEvent(input$select_all_rto, {
     updateCheckboxGroupInput(
@@ -177,6 +192,7 @@ server <- function(input, output, session) {
       session, "ba_select_2",
       selected = character(0)   
     )
+    
   })
   
   # Select ALL Non-RTOs 
@@ -190,17 +206,23 @@ server <- function(input, output, session) {
       session, "ba_select_1",
       selected = character(0)   
     )
+    
   })
   
   # Combine both BA selections
   selected_bas <- reactive({
-    c(input$ba_select_1, input$ba_select_2)
+    bas <- c(input$ba_select_1, input$ba_select_2)
+    if (input$national_select) {
+      bas <- c(bas, "National Average")
+    }
+    bas
   })
   
   # Reset button
   observeEvent(input$reset, {
-    updateCheckboxGroupInput(session, "ba_select_1", selected = available_bas[1])
+    updateCheckboxGroupInput(session, "ba_select_1", selected = character(0))
     updateCheckboxGroupInput(session, "ba_select_2", selected = character(0))
+    updateCheckboxInput(session, "national_select", value = TRUE)
   })
   
   # Filter data for generation
@@ -254,7 +276,8 @@ server <- function(input, output, session) {
                         text = paste0("BA: ", ba_code, 
                                       "<br>Year: ", year,
                                       "<br>", y_label, ": ", round(value, 2)))) +
-      geom_line(linewidth = 1.2) +
+      geom_line(aes(linewidth = ifelse(ba_code == "National Average", 1.5, 1.2))) +
+      scale_linewidth_identity() +
       scale_linetype_manual(
         name = "",
         values = linetype_map,
